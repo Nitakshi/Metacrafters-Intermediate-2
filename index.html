@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enhanced DApp</title>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
     <style>
@@ -42,31 +44,34 @@
     </style>
 </head>
 <body>
-    <h1>Enhanced DApp</h1>
+    <h1>BlockGreetings</h1>
 
+    <!-- Greeting Section -->
     <div class="container">
         <h2>Greeting</h2>
-        <p id="greeting"></p>
+        <p id="greeting">Fetching greeting...</p>
         <input type="text" id="newGreeting" placeholder="Enter new greeting">
         <button onclick="setGreeting()">Set Greeting</button>
     </div>
 
+    <!-- Counter Section -->
     <div class="container">
         <h2>Counter</h2>
-        <p id="counter"></p>
+        <p id="counter">Fetching counter...</p>
         <button onclick="incrementCounter()">Increment Counter</button>
         <button onclick="resetCounter()">Reset Counter</button>
     </div>
 
+    <!-- User Messages Section -->
     <div class="container">
         <h2>User Messages</h2>
         <input type="text" id="newMessage" placeholder="Enter new message">
         <button onclick="addMessage()">Add Message</button>
-        <div class="messages" id="messages"></div>
+        <div class="messages" id="messages">Fetching messages...</div>
     </div>
 
     <script>
-        const contractAddress = '0xd9145CCE52D386f254917e481eB44e9943F39138';
+        const contractAddress = '0x250daE721C22C685e583FbCBb4Ee1c2f9685E1c2';
         const contractABI = [
             {
                 "inputs": [{"internalType": "string", "name": "_greeting", "type": "string"}],
@@ -175,7 +180,7 @@
 
         async function getGreeting() {
             const greeting = await enhancedContract.methods.getGreeting().call();
-            document.getElementById('greeting').innerText = `Greeting: ${greeting}`; // Corrected with template literals
+            document.getElementById('greeting').innerText = Greeting: ${greeting};
         }
 
         async function setGreeting() {
@@ -187,7 +192,7 @@
 
         async function getCounter() {
             const counter = await enhancedContract.methods.getCounter().call();
-            document.getElementById('counter').innerText = `Counter: ${counter}`; // Corrected with template literals
+            document.getElementById('counter').innerText = Counter: ${counter};
         }
 
         async function incrementCounter() {
