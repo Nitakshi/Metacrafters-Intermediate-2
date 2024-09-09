@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enhanced DApp</title>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            margin-bottom: 20px;
+        }
+        .container h2 {
+            margin-bottom: 10px;
+        }
+        .container input, .container button {
+            padding: 10px;
+            margin-right: 10px;
+        }
+        .container button {
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+        .container button:hover {
+            background-color: #45a049;
+        }
+        .messages {
+            border: 1px solid #ddd;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .messages p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enhanced DApp</h1>
+
+    <div class="container">
+        <h2>Greeting</h2>
+        <p id="greeting"></p>
+        <input type="text" id="newGreeting" placeholder="Enter new greeting">
+        <button onclick="setGreeting()">Set Greeting</button>
+    </div>
+
+    <div class="container">
+        <h2>Counter</h2>
+        <p id="counter"></p>
+        <button onclick="incrementCounter()">Increment Counter</button>
+        <button onclick="resetCounter()">Reset Counter</button>
+    </div>
+
+    <div class="container">
+        <h2>User Messages</h2>
+        <input type="text" id="newMessage" placeholder="Enter new message">
+        <button onclick="addMessage()">Add Message</button>
+        <div class="messages" id="messages"></div>
+    </div>
+
+    <script>
+        const contractAddress = '0xd9145CCE52D386f254917e481eB44e9943F39138';
+        const contractABI = [
+            {
+                "inputs": [{"internalType": "string", "name": "_greeting", "type": "string"}],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {"indexed": false, "internalType": "string", "name": "oldGreeting", "type": "string"},
+                    {"indexed": false, "internalType": "string", "name": "newGreeting", "type": "string"}
+                ],
+                "name": "GreetingChanged",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {"indexed": false, "internalType": "uint256", "name": "newCounter", "type": "uint256"}
+                ],
+                "name": "CounterIncremented",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {"indexed": false, "internalType": "uint256", "name": "resetCounter", "type": "uint256"}
+                ],
+                "name": "CounterReset",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {"indexed": false, "internalType": "string", "name": "message", "type": "string"}
+                ],
+                "name": "MessageAdded",
+                "type": "event"
+            },
+            {
+                "inputs": [],
+                "name": "getGreeting",
+                "outputs": [{"internalType": "string", "name": "", "type": "string"}],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [{"internalType": "string", "name": "_greeting", "type": "string"}],
+                "name": "setGreeting",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "incrementCounter",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "resetCounter",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "getCounter",
+                "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [{"internalType": "string", "name": "_message", "type": "string"}],
+                "name": "addMessage",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "getMessages",
+                "outputs": [{"internalType": "string[]", "name": "", "type": "string[]"}],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+
+        let web3;
+        let enhancedContract;
+
+        async function init() {
+            if (window.ethereum) {
+                web3 = new Web3(window.ethereum);
+                await window.ethereum.enable();
+                enhancedContract = new web3.eth.Contract(contractABI, contractAddress);
+                getGreeting();
+                getCounter();
+                getMessages();
+            } else {
+                alert("Please install MetaMask!");
+            }
+        }
+
+        async function getGreeting() {
+            const greeting = await enhancedContract.methods.getGreeting().call();
+            document.getElementById('greeting').innerText = `Greeting: ${greeting}`; // Corrected with template literals
+        }
+
+        async function setGreeting() {
+            const newGreeting = document.getElementById('newGreeting').value;
+            const accounts = await web3.eth.getAccounts();
+            await enhancedContract.methods.setGreeting(newGreeting).send({ from: accounts[0] });
+            getGreeting();
+        }
+
+        async function getCounter() {
+            const counter = await enhancedContract.methods.getCounter().call();
+            document.getElementById('counter').innerText = `Counter: ${counter}`; // Corrected with template literals
+        }
+
+        async function incrementCounter() {
+            const accounts = await web3.eth.getAccounts();
+            await enhancedContract.methods.incrementCounter().send({ from: accounts[0] });
+            getCounter();
+        }
+
+        async function resetCounter() {
+            const accounts = await web3.eth.getAccounts();
+            await enhancedContract.methods.resetCounter().send({ from: accounts[0] });
+            getCounter();
+        }
+
+        async function addMessage() {
+            const newMessage = document.getElementById('newMessage').value;
+            const accounts = await web3.eth.getAccounts();
+            await enhancedContract.methods.addMessage(newMessage).send({ from: accounts[0] });
+            getMessages();
+        }
+
+        async function getMessages() {
+            const messages = await enhancedContract.methods.getMessages().call();
+            const messagesContainer = document.getElementById('messages');
+            messagesContainer.innerHTML = '';
+            messages.forEach(message => {
+                const messageElement = document.createElement('p');
+                messageElement.innerText = message;
+                messagesContainer.appendChild(messageElement);
+            });
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
