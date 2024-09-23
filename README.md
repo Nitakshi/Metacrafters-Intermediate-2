@@ -29,7 +29,7 @@ This project is a simple decentralized application (DApp) that interacts with a 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/enhanced-dapp.git](https://github.com/Nitakshi/Metacrafters-Intermediate-2
+git clone [https://github.com/Nitakshi/Metacrafters-Intermediate-2]
 ```
 
 ##Deploying the Smart Contract
