@@ -29,8 +29,7 @@ This project is a simple decentralized application (DApp) that interacts with a 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/enhanced-dapp.git
-cd enhanced-dapp
+git clone https://github.com/yourusername/enhanced-dapp.git](https://github.com/Nitakshi/Metacrafters-Intermediate-2
 ```
 
 ##Deploying the Smart Contract
@@ -119,6 +118,10 @@ Set Greeting: Enter a new greeting message and click "Set Greeting".
 View Counter: The current counter value will be displayed.
 Increment Counter: Click "Increment Counter" to increase the counter value.
 View and Add Messages: Enter a new message and click "Add Message" to add to the list of user messages. The list of messages will be displayed.
+
+## Author
+
+Metacrafter Student Nitakshi Azad
 
 ## License
 This project is licensed under the MIT License.
